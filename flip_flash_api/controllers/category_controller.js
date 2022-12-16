@@ -1,10 +1,10 @@
 const Category = require('../models/category')
 
 const addCategory = async(req,res,next) => {
-    const categoryName = req.body.categoryName
+    const name = req.body.name
     const user_id = req.body.user_id
     let newCategory = new Category({
-        name : categoryName, 
+        name : name, 
         user_id : user_id
     })
     newCategory.save().then(created_category => {
@@ -13,7 +13,7 @@ const addCategory = async(req,res,next) => {
             code : "000" ,
             data : {
                 category_id : created_category._id,
-                category_name : categoryName , 
+                category_name : name , 
                 flash_card_id_list : []
             }
         })
