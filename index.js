@@ -1,17 +1,10 @@
 const express = require('express');
-const routes = require('./flip_flash_api/routes/flip_flash')
-// set up express app
+const bodyParser = require('body-parser')
 const app = express();
 const mongoose = require('mongoose')
 const morgan = require('morgan') // use it to log more detail of user request
 const dotenv = require('dotenv')
 
-app.use(routes)
-
-// listen for requests
-app.listen(process.env.port || 8000, function(){
-   console.log('Server is running...');
-});
 // import route 
 const UserRoute = require('./flip_flash_api/routes/user');
 const CategoryRoute = require('./flip_flash_api/routes/category')
