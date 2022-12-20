@@ -8,6 +8,7 @@ const dotenv = require('dotenv')
 // import route 
 const UserRoute = require('./flip_flash_api/routes/user');
 const CategoryRoute = require('./flip_flash_api/routes/category')
+const FlashCardRoute = require('./flip_flash_api/routes/flip_flash')
 
 // implement .env file
 dotenv.config({path : 'config.env'})
@@ -31,3 +32,4 @@ app.listen(process.env.port || 8000, function() {
 // use route
 app.use('/flip_flash',UserRoute)
 app.use('/flip_flash',CategoryRoute)
+app.use('/flip_flash',FlashCardRoute)
