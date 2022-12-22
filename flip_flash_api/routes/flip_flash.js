@@ -7,6 +7,8 @@ const auth = require('../middlewares/auth')
 
 router.post('/flash_card/add',FlashCardController.addCard );
 router.get('/flash_card/get',FlashCardController.getCard) ;
+router.post('/flash_card/update',FlashCardController.updateCard);
+router.post('/flash_card/delete',FlashCardController.deleteCard);
 router.patch('/flash_card/favorite/add',FlashCardController.addToFavorite)
 
 

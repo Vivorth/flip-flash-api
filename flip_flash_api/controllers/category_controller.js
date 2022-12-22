@@ -39,4 +39,42 @@ const getCategory = async(req,res) => {
 
 }
 
-module.exports = {addCategory , getCategory}
+const updateCategory = async(req, res) => {
+    var query = {_id: req.body.category_id}
+    var dataTobeUpdated = {$set:{
+        category_name: req.body.category_name
+    }}
+    await Category.findOneAndUpdate(
+        query,
+        dataTobeUpdated
+    ).then(updatedCategory => {
+        res.status(200)
+        .json({
+            message: "Category has been updated successfully.",
+            data: updatedCategory
+            
+        })
+    })
+    .catch(err =>{
+        res.send(err)
+    })
+}
+
+const deleteCategory = async(req, res) => {
+    const categoryId = req.body.category_id
+    await Category.findByIdAndDelete(
+        categoryId
+    ).then(deletedCategory =>{
+        res.status(200)
+        .json({
+            message: "Category has been deleted successfully.",
+            data: {
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).json({err})
+    })
+}
+
+module.exports = {addCategory, updateCategory, deleteCategory, getCategory}
