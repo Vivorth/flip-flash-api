@@ -2,9 +2,10 @@ const Category = require('../models/category')
 
 const addCategory = async(req,res,next) => {
     const category_name = req.body.category_name
-    const user_id = req.body.user_id
+    console.log(category_name)
+    const user_id = req.user.id
     let newCategory = new Category({
-        name : category_name, 
+        category_name : category_name, 
         user_id : user_id
     })
     newCategory.save().then(created_category => {
@@ -26,17 +27,19 @@ const addCategory = async(req,res,next) => {
 
 }
 
-const getCategory = async(req,res) => {
-    await Category.find({}).then(function(categories){
+const getCategoryByUserID = async(req,res) => {
+    console.log("GetCategory execute");
+    await Category.find({user_id : req.user.id}).then(function(categories){
         res.status(200).json({
             message : "Fetch category successfully!" ,
             code : "000" ,
             data : categories
         })
     }).catch(err =>{
+        console.log(err)
         res.send(err)
     })
 
 }
 
-module.exports = {addCategory , getCategory}
+module.exports = {addCategory , getCategoryByUserID}

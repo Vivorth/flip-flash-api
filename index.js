@@ -4,6 +4,8 @@ const app = express();
 const mongoose = require('mongoose')
 const morgan = require('morgan') // use it to log more detail of user request
 const dotenv = require('dotenv')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 // import route 
 const UserRoute = require('./flip_flash_api/routes/user');
@@ -23,10 +25,13 @@ mongoose.connect(process.env.MONGODB_URL)
 app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
+app.use(cookieParser())
+app.use(cors())
 
 //listen requests
-app.listen(process.env.port || 8000, function() {
-    console.log('App is running on http://localhost:3000/ by default')
+const port = process.env.port || 8000
+app.listen(port, function() {
+    console.log(`App is running on http://localhost:${port}/`,)
 });
 
 // use route

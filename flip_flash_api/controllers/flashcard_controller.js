@@ -1,13 +1,15 @@
 const FlashCard = require('../models/flash_card.')
+const Category = require('../models/category')
 
 const addCard = async(req,res) =>{
     let newCard = new FlashCard({
         title : req.body.title , 
         explanation : req.body.explanation,
-        category_id : req.body.category_id , 
+        category_id : req.body.name , 
         isSaved : req.body.isSaved
     })
-    await newCard.save().then(createdCard => { 
+    await newCard.save().then(createdCard => {
+        Category 
         res.status(200).json({
             message : "Card add successful" ,
             splash_cards : createdCard

@@ -8,5 +8,5 @@ const auth = require('../middlewares/auth')
 router.post('/category/add',auth,CategoryController.addCategory)
 
 // get category 
-router.get('/category/get',auth,CategoryController.getCategory)
+router.get('/category/get',auth,CategoryController.getCategoryByUserID)
 module.exports = router

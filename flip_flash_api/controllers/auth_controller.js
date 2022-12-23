@@ -49,12 +49,16 @@ const signin = async(req,res) => {
     const isMatch = await bcrypt.compare(password,user.password)
     if(!isMatch) return res.status(501).json({message : 'Incorrect Password'})
 
-    const access_token = createAccessToken({id : user._id})
-    const refresh_token = createRefreshToken({id: user._id})
+    const access_token = createAccessToken({id : user._id})  // Local Storage
+    const refresh_token = createRefreshToken({id: user._id}) // Cookies
+    res.cookie('accessToken',access_token )
+    res.cookie('refreshToken',refresh_token,{
+        httpOnly : true
+    })
     res.json({
-        msg: "Login Success!",
-        refresh_token,
-        access_token,
+        message: "Login Success!",
+        // refresh_token,
+        // access_token,
         user: {
             id : user._id,
             username: user.username,
@@ -66,17 +70,36 @@ const signin = async(req,res) => {
     })
 } 
 
+const getNewAccessToken = (req,res) => {
+    const refresh_token = req.cookies.refreshToken
+    const decoded = jwt.verify(refresh_token,process.env.REFRESH_TOKEN_SECRET)
+        
+    
+    if(!decoded){
+        res.status(400).json({
+            error : err
+        })
+    }
+    const new_token = createAccessToken({name : decoded.name},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1h'})
+    // res.status(200).json({
+    //     message : 'New Token Generate Successful',
+    //     refreshToken : new_token
+    // })
+    console.log("New Token",new_token)
+    return new_token
+}
+
 const createAccessToken = (payload) => {
-    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
     console.log("JWT",res);
     return res
 }
 
 const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '3d'})
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '48h'})
 }
 
 
 module.exports = {
-    register,signin
+    register,signin,getNewAccessToken,createAccessToken
 }
