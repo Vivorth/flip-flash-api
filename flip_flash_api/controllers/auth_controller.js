@@ -51,14 +51,15 @@ const signin = async(req,res) => {
 
     const access_token = createAccessToken({id : user._id})  // Local Storage
     const refresh_token = createRefreshToken({id: user._id}) // Cookies
-    res.cookie('accessToken',access_token )
+    console.log("accessToken")
+    res.cookie('accessToken',access_token,{httpOnly: false  } )
     res.cookie('refreshToken',refresh_token,{
-        httpOnly : true
+        httpOnly : false    
     })
     res.json({
         message: "Login Success!",
-        // refresh_token,
-        // access_token,
+        refresh_token,
+        access_token,
         user: {
             id : user._id,
             username: user.username,

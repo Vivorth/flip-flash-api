@@ -35,6 +35,15 @@ app.listen(port, function() {
 });
 
 // use route
+// With middleware
+app.get('/', function(req, res, next){
+    res.cookie('title', '12345');
+    return res.json({cookieset : 'cookie set'});
+})
+app.get('/getAccessToken', function(req, res){
+    const accessToken = req.cookies.accessToken;
+    return res.json({accessToken : accessToken});
+})
 app.use('/flip_flash',UserRoute)
 app.use('/flip_flash',CategoryRoute)
 app.use('/flip_flash',FlashCardRoute)
