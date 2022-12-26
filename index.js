@@ -41,7 +41,7 @@ app.listen(port, function() {
 // With middleware
 app.get('/', function(req, res, next){
     res.cookie('title', '10');
-    res.cookie('accessToken','asdasdasdasdasd' , {httpOnly : true,secure : false, domain : 'https://next-js-api-testing.vercel.app' })
+    res.cookie('accessToken','asdasdasdasdasd' , {httpOnly : true,secure : false, domain : '.localhost' })
     return res.json({cookieset :'cookie set'}); 
 })
 app.get('/getCookies', function(req, res){
