@@ -6,6 +6,7 @@ const morgan = require('morgan') // use it to log more detail of user request
 const dotenv = require('dotenv')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const session = require("express-session");
 
 // import route 
 const UserRoute = require('./flip_flash_api/routes/user');
@@ -26,7 +27,9 @@ app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+	credentials: true
+}))
 
 //listen requests
 const port = process.env.PORT || 8000
@@ -37,11 +40,13 @@ app.listen(port, function() {
 // use route
 // With middleware
 app.get('/', function(req, res, next){
-    res.cookie('title', '12345');
-    return res.json({cookieset : 'cookie set'});
+    res.cookie('title', '10');
+    res.cookie('accessToken','asdasdasdasdasd' , {httpOnly : true,secure : false, domain : 'https://next-js-api-testing.vercel.app' })
+    return res.json({cookieset :'cookie set'}); 
 })
-app.get('/getAccessToken', function(req, res){
+app.get('/getCookies', function(req, res){
     const accessToken = req.cookies.accessToken;
+    console.log(accessToken)
     return res.json({accessToken : accessToken});
 })
 app.use('/flip_flash',UserRoute)
