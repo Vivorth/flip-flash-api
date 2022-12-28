@@ -28,7 +28,10 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(cors({
-	credentials: true
+    origin : "http://localhost:3001", // change when deployed
+	credentials: true,
+    // exposedHeaders : ["set-cookie"],
+
 }))
 
 //listen requests
@@ -40,8 +43,8 @@ app.listen(port, function() {
 // use route
 // With middleware
 app.get('/', function(req, res, next){
-    res.cookie('title', '10');
-    res.cookie('accessToken','asdasdasdasdasd' , {httpOnly : true,secure : false, domain : '.localhost' })
+    res.cookie('title', '12');
+    res.cookie('accessToken','asdasd',{httpOnly : true})
     return res.json({cookieset :'cookie set'}); 
 })
 app.get('/getCookies', function(req, res){

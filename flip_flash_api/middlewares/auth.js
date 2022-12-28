@@ -10,6 +10,7 @@ const authenticate = async (req,res,next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,function(err,decoded){
             console.log("Err",err)
             console.log("Decoded",decoded)
+            req.user = decoded
             if(err){
                 if(err.name == "TokenExpiredError"){
                     const new_token = getNewAccessToken(req,res)
@@ -20,13 +21,13 @@ const authenticate = async (req,res,next) => {
                     //     accessToken : new_token
                     // })
                     res.cookie('accessToken',new_token)
+                    console.log("Decode after refresh",decoded)
                 }
            
             }else{
                 if(!decoded) return res.status(400).json({err : 'Invalid Authenticationasdsa'})
             }
             console.log("decoded",decoded)
-            req.user = decoded
         }) 
         next()
       
