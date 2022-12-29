@@ -132,4 +132,4 @@ const deelteAllCard = async(req,res) => {
 
 //Update flash card
 
-module.exports = {addCard,getCard,addToFavorite, deelteAllCard}
+module.exports = {addCard,getCard, updateCard, deleteCard,addToFavorite, deelteAllCard}
