@@ -1,13 +1,18 @@
+// Not yet handle duplicate
 const Category = require('../models/category')
+const User = require('../models/user')
 
 const addCategory = async(req,res,next) => {
     const category_name = req.body.category_name
-    const user_id = req.body.user_id
+    console.log(category_name)
+    const user_id = req.user.id
     let newCategory = new Category({
-        name : category_name, 
+        category_name : category_name, 
         user_id : user_id
     })
-    newCategory.save().then(created_category => {
+    newCategory.save().then(async created_category => {
+        await User.findByIdAndUpdate({_id : user_id},{$push : {category_id_list : created_category._id}})             
+
         res.status(200).json({
             message : "Category has been added successfully!" ,
             code : "000" ,
@@ -26,14 +31,16 @@ const addCategory = async(req,res,next) => {
 
 }
 
-const getCategory = async(req,res) => {
-    await Category.find({}).then(function(categories){
+const getCategoryByUserID = async(req,res) => {
+    console.log("GetCategory execute");
+    await Category.find({user_id : req.user.id}).then(function(categories){
         res.status(200).json({
             message : "Fetch category successfully!" ,
             code : "000" ,
             data : categories
         })
     }).catch(err =>{
+        console.log(err)
         res.send(err)
     })
 
@@ -77,4 +84,4 @@ const deleteCategory = async(req, res) => {
     })
 }
 
-module.exports = {addCategory, updateCategory, deleteCategory, getCategory}
+module.exports = {addCategory, updateCategory, deleteCategory, getCategoryByUserID}

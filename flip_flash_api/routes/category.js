@@ -9,5 +9,5 @@ router.post('/category/add',auth,CategoryController.addCategory)
 router.post('/category/update',auth,CategoryController.updateCategory)
 router.post('/category/delete',auth,CategoryController.deleteCategory)
 // get category 
-router.get('/category/get',auth,CategoryController.getCategory)
+router.get('/category/get',auth,CategoryController.getCategoryByUserID)
 module.exports = router

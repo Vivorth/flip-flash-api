@@ -22,6 +22,7 @@ const flashcardSchema = new mongoose.Schema({
     color : {
         type : String , 
         required : false ,
+        
     } ,
     isSaved : {
         type : Boolean,

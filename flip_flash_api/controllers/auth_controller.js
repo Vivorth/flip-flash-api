@@ -49,10 +49,15 @@ const signin = async(req,res) => {
     const isMatch = await bcrypt.compare(password,user.password)
     if(!isMatch) return res.status(501).json({message : 'Incorrect Password'})
 
-    const access_token = createAccessToken({id : user._id})
-    const refresh_token = createRefreshToken({id: user._id})
+    const access_token = createAccessToken({id : user._id})  // Local Storage
+    const refresh_token = createRefreshToken({id: user._id}) // Cookies
+    console.log("accessToken")
+    res.cookie('accessToken',access_token,{httpOnly: false  } )
+    res.cookie('refreshToken',refresh_token,{
+        httpOnly : false    
+    })
     res.json({
-        msg: "Login Success!",
+        message: "Login Success!",
         refresh_token,
         access_token,
         user: {
@@ -66,17 +71,37 @@ const signin = async(req,res) => {
     })
 } 
 
+const getNewAccessToken = (req,res) => {
+    const refresh_token = req.cookies.refreshToken
+    const decoded = jwt.verify(refresh_token,process.env.REFRESH_TOKEN_SECRET)
+        
+    
+    if(!decoded){
+        res.status(400).json({
+            error : err
+        })
+    }
+    const new_token = createAccessToken({id : decoded.id},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10s'})
+    // res.status(200).json({
+    //     message : 'New Token Generate Successful',
+    //     refreshToken : new_token
+    // })
+    console.log("New Token",new_token)
+    req.user = decoded
+    return new_token
+}
+
 const createAccessToken = (payload) => {
-    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10s'})
     console.log("JWT",res);
     return res
 }
 
 const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '3d'})
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '48h'})
 }
 
 
 module.exports = {
-    register,signin
+    register,signin,getNewAccessToken,createAccessToken
 }
