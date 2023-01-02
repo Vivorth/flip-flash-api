@@ -86,13 +86,13 @@ const getNewAccessToken = (req,res) => {
     //     message : 'New Token Generate Successful',
     //     refreshToken : new_token
     // })
-    console.log("New Token",new_token)
+    console.log("New Token",decoded)
     req.user = decoded
     return new_token
 }
 
 const createAccessToken = (payload) => {
-    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
+    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10s'})
     console.log("JWT",res);
     return res
 }
