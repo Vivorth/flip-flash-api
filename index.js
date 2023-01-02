@@ -54,4 +54,4 @@ app.get('/getCookies', function(req, res){
 })
 app.use('/flip_flash',UserRoute)
 app.use('/flip_flash',CategoryRoute)
-app.use('/flip_flash/flash_card',FlashCardRoute)
+app.use('/flip_flash',FlashCardRoute)

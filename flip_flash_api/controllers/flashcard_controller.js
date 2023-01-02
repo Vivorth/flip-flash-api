@@ -1,3 +1,5 @@
+const { request } = require('express')
+// Not yet handle duplicate
 const FlashCard = require('../models/flash_card.')
 const Category = require('../models/category')
 const User = require('../models/user')
@@ -65,6 +67,44 @@ const getCard = async (req,res)=>{
     })
 }
 
+
+const updateCard = async (req, res) => {
+    var query = {_id: req.body.flash_card_id}
+    var dataTobeUpdated = {$set:{
+        title: req.body.title,
+        explanation: req.body.explanation,
+        color: req.body.color
+    }}
+
+    await FlashCard.findOneAndUpdate(
+        query,
+        dataTobeUpdated
+    ).then(updatedCard => {
+        res.status(200).json({
+            message : "Updated sucessfuly",
+            data : updatedCard
+        })
+    })
+    .catch(err => {
+        res.status(500).json({err})
+    })
+}
+
+const deleteCard = async (req, res) => {
+    const flash_card_id = req.body.flash_card_id
+    await FlashCard.findByIdAndDelete(
+        flash_card_id
+    ).then(deletedFlashCard => {
+        res.status(200).json({
+            message : "Deleted sucessfuly",
+            data : deletedFlashCard
+        })
+    })
+    .catch(err => {
+        res.status(500).json({err})
+    })
+}
+
 // Not yet fix 
 const addToFavorite = async (req,res) =>{
     const id = req.body.id 
@@ -99,4 +139,4 @@ const deelteAllCard = async(req,res) => {
 // }
 //Update flash card
 
-module.exports = {addCard,getCard,addToFavorite, deelteAllCard}
+module.exports = {addCard,getCard, updateCard, deleteCard,addToFavorite, deelteAllCard}

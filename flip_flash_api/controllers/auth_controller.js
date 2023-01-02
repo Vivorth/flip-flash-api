@@ -92,13 +92,13 @@ const getNewAccessToken = (req,res) => {
 }
 
 const createAccessToken = (payload) => {
-    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10s'})
+    const res = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '2h'})
     console.log("JWT",res);
     return res
 }
 
 const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '48h'})
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '3d'})
 }
 
 
