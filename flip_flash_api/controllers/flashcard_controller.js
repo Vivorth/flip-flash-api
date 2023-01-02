@@ -67,6 +67,7 @@ const getCard = async (req,res)=>{
     })
 }
 
+
 const updateCard = async (req, res) => {
     var query = {_id: req.body.flash_card_id}
     var dataTobeUpdated = {$set:{
@@ -104,6 +105,7 @@ const deleteCard = async (req, res) => {
     })
 }
 
+// Not yet fix 
 const addToFavorite = async (req,res) =>{
     const id = req.body.id 
     FlashCard.findByIdAndUpdate(id , {isSaved : true} , function(err,docs){
@@ -129,7 +131,12 @@ const deelteAllCard = async(req,res) => {
 }
 
 // deleteFlashCard
-
+// const deleteCardbyName = async(req,res) => {
+//     const user_id = req.user.id
+//     let card_name = req.path
+//     card_name = flash_card.slice(1) // remove '/' in path
+//     FlashCard.delete({})
+// }
 //Update flash card
 
 module.exports = {addCard,getCard, updateCard, deleteCard,addToFavorite, deelteAllCard}

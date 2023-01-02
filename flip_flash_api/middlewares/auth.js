@@ -14,20 +14,19 @@ const authenticate = async (req,res,next) => {
             if(err){
                 if(err.name == "TokenExpiredError"){
                     const new_token = getNewAccessToken(req,res)
-                    console.log("Auth New Token",new_token)
+                    // console.log("Auth New Token",new_token)
                     // req.headers.authorization = new_token
                     // res.status(201).json({
                     //     message : 'Old Token Expired, New AccessToken Generated',
                     //     accessToken : new_token
                     // })
                     res.cookie('accessToken',new_token)
-                    console.log("Decode after refresh",decoded)
                 }
            
             }else{
                 if(!decoded) return res.status(400).json({err : 'Invalid Authenticationasdsa'})
             }
-            console.log("decoded",decoded)
+            // console.log("decoded",decoded)
         }) 
         next()
       
