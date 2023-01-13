@@ -7,7 +7,8 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const session = require("express-session");
-
+const serverless = require("serverless-http");
+const router = express.Router()
 // import route 
 const UserRoute = require('./flip_flash_api/routes/user');
 const CategoryRoute = require('./flip_flash_api/routes/category')
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(cors({
-    origin : "http://localhost:3001", // change when deployed
+    origin : ["http://localhost:4200","http://localhost:8000","http://localhost:3001"], // change when deployed
 	credentials: true,
     
     // exposedHeaders : ["set-cookie"],
@@ -47,3 +48,13 @@ app.listen(port, function() {
 app.use('/flip_flash',UserRoute)
 app.use('/flip_flash',CategoryRoute)
 app.use('/flip_flash',FlashCardRoute)
+
+router.get('/',function(req,res){
+    res.json({
+        'path' : 'Home',
+        'firstName' :'Bibek'
+    })
+})
+app.use('/.netlify/functions/api',router)
+module.exports = app
+module.exports.handler = serverless(app);

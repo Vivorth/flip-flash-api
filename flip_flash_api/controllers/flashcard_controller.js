@@ -8,34 +8,15 @@ const addCard = async(req,res) =>{
     // find category by id 
     try {
     const userId = req.user.id
-    const category_name = req.body.category_name
-    console.log(category_name)
-    const category = await Category.find({user_id : userId,category_name:category_name})
-    console.log(category)
-    const category_id = category[0]._id
-        let allCards = []
-        const allTitle = req.body.title
-        const allExplanation = req.body.explanation 
-        const allSaved = req.body.isSaved
-        const allColor = req.body.color
-        console.log(allTitle)
-        for(let i =0 ; i<allTitle.length ;i ++){
+    const splashCards = req.body.splash_cards
+    console.log(splashCards)
 
-            const newCard = {title  : allTitle[i],
-                             explanation : allExplanation[i],
-                             category_id : category_id,
-                             isSaved : allSaved[i]
-                            }
-
-            allCards.push(newCard) ; 
-        }
-            
-
-        await FlashCard.insertMany(allCards)
+    // for(let i =0 ; i<splashCards.length ; i++) {
+        await FlashCard.insertMany(splashCards)
         .then( function(results){
             results.map(async (result)=>{
                 console.log("Result",result)
-                await Category.findByIdAndUpdate({_id : category_id},{$push : {flash_card_id_list : result._id}})             
+                await Category.findByIdAndUpdate({_id : result.category_id},{$push : {flash_card_id_list : result._id}})             
             })
             res.status(200).json({
                 message : "Add Card Success",
@@ -46,6 +27,29 @@ const addCard = async(req,res) =>{
             console.log(err)
             res.status(500).json({error : err})
         })
+    // }
+    // const category = await Category.find({user_id : userId,category_name:category_name})
+    // console.log(category)
+    // const category_id = category[0]._id
+    //     let allCards = []
+    //     const allTitle = req.body.title
+    //     const allExplanation = req.body.explanation 
+    //     const allSaved = req.body.isSaved
+    //     const allColor = req.body.color
+    //     console.log(allTitle)
+    //     for(let i =0 ; i<allTitle.length ;i ++){
+
+    //         const newCard = {title  : allTitle[i],
+    //                          explanation : allExplanation[i],
+    //                          category_id : category_id,
+    //                          isSaved : allSaved[i]
+    //                         }
+
+    //         allCards.push(newCard) ; 
+    //     }
+            
+
+       
     
     } catch (error) {
         console.log(error)
