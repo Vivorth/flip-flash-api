@@ -52,7 +52,7 @@ const signin = async(req,res) => {
     const access_token = createAccessToken({id : user._id})  // Local Storage
     const refresh_token = createRefreshToken({id: user._id}) // Cookies
     console.log("accessToken")
-    res.cookie('accessToken',access_token,{httpOnly: false  } )
+    res.cookie('accessToken',access_token,{httpOnly: false} )
     res.cookie('refreshToken',refresh_token,{
         httpOnly : false    
     })
