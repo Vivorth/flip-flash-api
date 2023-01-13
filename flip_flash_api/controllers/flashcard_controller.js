@@ -16,7 +16,7 @@ const addCard = async(req,res) =>{
         .then( function(results){
             results.map(async (result)=>{
                 console.log("Result",result)
-                await Category.findByIdAndUpdate({_id : result.category_id},{$push : {flash_card_id_list : result._id}})             
+                await Category.findByIdAndUpdate({_id : result.category_id , user_id : userId},{$push : {flash_card_id_list : result._id}})             
             })
             res.status(200).json({
                 message : "Add Card Success",
